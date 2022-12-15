@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, flash, redirect, url_for, session, request, jsonify
 from flask_login import LoginManager, login_required, login_user, UserMixin, current_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
@@ -17,6 +19,21 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.init_app(app)
 login_manager.login_view = 'index'
+
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
+
+class Config(object):
+    ...
+    # Since SQLAlchemy 1.4.x has removed support for the 'postgres://' URI scheme,
+    # update the URI to the postgres database to use the supported 'postgresql://' scheme
+    if os.getenv('DATABASE_URL'):
+        SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL').replace("postgres://", "postgresql://", 1)
+    else:
+        SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(BASEDIR, 'instance', 'app.db')}"
+
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # Logging
+    LOG_WITH_GUNICORN = os.getenv('LOG_WITH_GUNICORN', default=False)
 
 
 @login_manager.user_loader
