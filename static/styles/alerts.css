@@ -1,0 +1,26 @@
+svg {
+    width: 20px;
+    height: 20px;
+    left: 40%;
+    position: absolute;
+}
+
+.alert {
+    height: 50px;
+}
+
+
+.center_side {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+.alert_success svg {
+    width: 20px;
+    height: 20px;
+    left: 40%;
+    position: absolute;
+}
