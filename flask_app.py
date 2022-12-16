@@ -164,12 +164,14 @@ def create():
 def edit(task_id):
     form = task_edit_form.EditTaskForm()
     task = Task.query.filter_by(id=task_id).first()
+    if task is None:
+        return redirect(url_for('main'))
 
-    if request.method == 'GET':
+    elif request.method == 'GET':
         form.task_name.data = task.task_name
         form.priority.data = task.priority
         return render_template('edit.html', form=form)
-    if request.method == 'POST':
+    elif request.method == 'POST':
         task.task_name = form.task_name.data
         task.priority = form.priority.data
         db.session.commit()
