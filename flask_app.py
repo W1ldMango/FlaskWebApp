@@ -48,8 +48,6 @@ app = create_app()
 db = db_create(app)
 login_manager = login_manager_create(app)
 
-
-
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -103,7 +101,10 @@ def index():
         if form.validate_on_submit():
             session['username'] = form.username.data
             session['password'] = form.password.data
-            user = User.query.filter_by(username=form.username.data).first()
+            try:
+                user = User.query.filter_by(username=form.username.data).first()
+            except:
+                return 'There was a problem with that username'
             if user and check_password_hash(user.password, session['password']):
                 flash('You were successfully logged in', 'login_success')
 
@@ -121,7 +122,10 @@ def index():
 @app.route('/main', methods=['GET', 'POST'])
 @login_required
 def main():
-    currentTasks = Task.query.filter_by(todo_owner=current_user.id).all()
+    try:
+        currentTasks = Task.query.filter_by(todo_owner=current_user.id).all()
+    except:
+        return 'There was a problem with the database at the main page'
     if request.method == 'POST':
         if request.form['manage_task'] == 'delete':
             button_delete()
@@ -163,7 +167,10 @@ def create():
 @login_required
 def edit(task_id):
     form = task_edit_form.EditTaskForm()
-    task = Task.query.filter_by(id=task_id).first()
+    try:
+        task = Task.query.filter_by(id=task_id).first()
+    except:
+        return 'There was a problem with the database at the edit page'
     if task is None:
         return redirect(url_for('main'))
 
@@ -184,8 +191,11 @@ def edit(task_id):
 @app.route('/json', methods=['GET', 'POST'])
 @login_required
 def json():
-    tasks = Task.query.filter_by(todo_owner=current_user.id).all()
-    user = User.query.filter_by(id=current_user.id).first()
+    try:
+        tasks = Task.query.filter_by(todo_owner=current_user.id).all()
+        user = User.query.filter_by(id=current_user.id).first()
+    except:
+        return 'There was a problem with the database at the json page'
 
     tasks_list = []
 
