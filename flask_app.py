@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, flash, redirect, url_for, session, request, jsonify, abort
+from flask import Flask, render_template, flash, redirect, url_for, session, request, jsonify
 from flask_login import LoginManager, login_required, login_user, UserMixin, current_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 
@@ -8,17 +8,47 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from services.forms import login_form, task_form, task_edit_form, registration_form
 
-app = Flask(__name__)
 
-app.config['SECRET_KEY'] = '022478f43dd6b249e1fd271d0f049de1'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config["SESSION_PERMANENT"] = False
-db = SQLAlchemy(app)
+# app = Flask(__name__)
 
-login_manager = LoginManager(app)
-login_manager.init_app(app)
-login_manager.login_view = 'index'
+# app.config['SECRET_KEY'] = '022478f43dd6b249e1fd271d0f049de1'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config["SESSION_PERMANENT"] = False
+# db = SQLAlchemy(app)
+
+# login_manager = LoginManager(app)
+# login_manager.init_app(app)
+# login_manager.login_view = 'index'
+
+
+def create_app():
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = '022478f43dd6b249e1fd271d0f049de1'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config["SESSION_PERMANENT"] = False
+    return app
+
+
+def db_create(app):
+    db = SQLAlchemy(app)
+    db.init_app(app)
+    return db
+
+
+def login_manager_create(app):
+    login_manager = LoginManager(app)
+    login_manager.init_app(app)
+    login_manager.login_view = 'index'
+    return login_manager
+
+
+app = create_app()
+db = db_create(app)
+login_manager = login_manager_create(app)
+
+
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -232,4 +262,4 @@ def button_delete():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    create_app()

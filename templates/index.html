@@ -29,7 +29,7 @@
 
 {% for message in get_flashed_messages(category_filter=["login_error"]) %}
     <div class="alert alert-warning d-flex align-items-center" role="alert">
-      <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"></use></svg>
+      <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Warning:"><use href="#exclamation-triangle-fill"></use></svg>
       <div class="center_side">
         {{ message }}
       </div>
@@ -48,27 +48,11 @@
         <div>
             {{ form.submit(class="auth_button") }}
         </div>
-{#        <div class="reg">#}
-{#            <a href="{{ url_for('registration') }}">Registration</a>#}
             <button class="reg_button" type="button" onclick="location.href='{{ url_for('registration') }}'">Registration</button>
-
-{#        </div>#}
-
-
-
-
     </form>
-
-
-
-
 </div>
-
 <footer>
     <p>Vladimir Stankov © 2022</p>
 </footer>
-
-
-
 </body>
 </html>
