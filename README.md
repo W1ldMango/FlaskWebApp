@@ -77,12 +77,9 @@ přihlášení uživatele, zabezpečení administrace úkolů před anonymním p
 
 ## Css styles validation
 
-[//]: # (Add steps to validate css styles)
-
-1) Go to the flaskProject/validator/css/
-2) There are 3 images with validation of css styles
-
-[//]: # (Html validation)
+![plot](./validator/css/alerts-css-validate.jpg)
+![plot](./validator/css/login-css-validate.jpg)
+![plot](./validator/css/main-css-validate.jpg)
 
 ## Html validation
 
