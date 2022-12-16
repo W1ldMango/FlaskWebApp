@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, flash, redirect, url_for, session, request, jsonify
+from flask import Flask, render_template, flash, redirect, url_for, session, request, jsonify, abort
 from flask_login import LoginManager, login_required, login_user, UserMixin, current_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 
@@ -22,6 +22,7 @@ login_manager.login_view = 'index'
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
+
 class Config(object):
     ...
     # Since SQLAlchemy 1.4.x has removed support for the 'postgres://' URI scheme,
@@ -29,7 +30,7 @@ class Config(object):
     if os.getenv('DATABASE_URL'):
         SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL').replace("postgres://", "postgresql://", 1)
     else:
-        SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(BASEDIR, 'instance', 'app.db')}"
+        SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(BASEDIR, 'instance', 'main.db')}"
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # Logging
@@ -66,21 +67,21 @@ class Task(db.Model):
 # Run index.html page
 # main / login page
 @app.route('/', methods=['GET', 'POST'])
-@login_required
 def index():
     form = login_form.AuthorisationForm()
-    if form.validate_on_submit():
-        session['username'] = form.username.data
-        session['password'] = form.password.data
-        user = User.query.filter_by(username=form.username.data).first()
-        if user and check_password_hash(user.password, session['password']):
-            flash('You were successfully logged in', 'login_success')
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            session['username'] = form.username.data
+            session['password'] = form.password.data
+            user = User.query.filter_by(username=form.username.data).first()
+            if user and check_password_hash(user.password, session['password']):
+                flash('You were successfully logged in', 'login_success')
 
-            login_user(user)
-            return redirect(url_for('main'))
+                login_user(user)
+                return redirect(url_for('main'))
 
-        else:
-            flash('Invalid username or password', 'login_error')
+            else:
+                flash('Invalid username or password', 'login_error')
 
     return render_template('index.html', form=form)
 
