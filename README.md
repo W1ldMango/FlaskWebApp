@@ -32,6 +32,7 @@ přihlášení uživatele, zabezpečení administrace úkolů před anonymním p
 4) You can edit task by clicking on the button "Edit"
 5) You can delete task by clicking on the button "Delete"
 6) You can mark task as done by clicking on the button "Done"
+7) You can filter completed tasks or uncompleted tasks by clicking on the name of the filed "Actions" and "Task"
 
 ## Test users
 

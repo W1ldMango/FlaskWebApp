@@ -136,6 +136,12 @@ def main():
         elif request.form['manage_task'] == 'success':
             button_done()
             return redirect(url_for('main'))
+        elif request.form['manage_task'] == 'sort_action':
+            currentTasks = Task.query.filter_by(todo_owner=current_user.id).order_by(Task.status.desc()).all()
+        elif request.form['manage_task'] == 'sort_priority':
+            currentTasks = Task.query.filter_by(todo_owner=current_user.id).order_by(Task.status).all()
+
+            return render_template('main.html', tasks=currentTasks)
 
     return render_template('main.html', tasks=currentTasks)
 

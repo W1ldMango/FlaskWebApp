@@ -68,10 +68,16 @@
             <table class="table mb-0">
               <thead>
                 <tr>
-                  <th scope="col">User</th>
-                  <th scope="col">Task</th>
-                  <th scope="col">Priority</th>
-                  <th scope="col">Actions</th>
+                    <form method="post" action="">
+                        <th scope="col">User</th>
+                        <th scope="col">
+                            <button type="submit" name="manage_task" value="sort_priority" class="sort_button">Tasks</button>
+                        </th>
+                        <th scope="col">Priority</th>
+                        <th scope="col">
+                            <button type="submit" class="sort_button" name="manage_task" value="sort_action">Actions</button>
+                        </th>
+                    </form>
                 </tr>
               </thead>
                 <tbody>
